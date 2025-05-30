@@ -1,0 +1,145 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1, h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#auth-container { /* Contenedor padre para las vistas de login y registro */
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center; /* Centra el contenido dentro del contenedor */
+}
+
+#login-container, #register-container {
+    padding: 20px 0; /* Espaciado interno */
+}
+
+#login-container h2, #register-container h2 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    text-align: left; /* Alinea las etiquetas a la izquierda */
+}
+
+input[type="text"],
+input[type="password"] {
+    width: calc(100% - 12px);
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px; /* Espacio superior para los botones */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#logout-button {
+    background-color: #dc3545;
+    margin-bottom: 40px; /* Espacio debajo del botón de logout */
+}
+
+#logout-button:hover {
+    background-color: #c82333;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+.message { /* Estilo para mensajes de éxito/información */
+    color: green;
+    margin-top: 10px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+
+
+.chart-container h2 {
+    margin-top: 0;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+#interactions-by-day-chart,
+#top-intents-chart {
+    width: 100%;
+    max-height: 300px; /* Ajusta la altura según necesites */
+}
+
+/* Estilos para los enlaces de alternar formularios */
+#auth-container p {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+#auth-container p a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#auth-container p a:hover {
+    text-decoration: underline;
+    
+}
+
+.chart-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.chart-container {
+    flex: 1;
+    min-width: 400px;
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
+
+

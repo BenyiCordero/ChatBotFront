@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas del Chatbot</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="auth-container">
+        <div id="login-container">
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+                <label for="username">Usuario:</label>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required><br><br>
+                <button type="submit">Iniciar Sesión</button>
+                <p id="login-error" class="error"></p>
+            </form>
+            <p>¿No tienes cuenta? <a href="#" id="show-register">Regístrate aquí</a></p>
+        </div>
+
+        <div id="register-container" style="display:none;">
+            <h2>Registrarse</h2>
+            <form id="register-form">
+                <label for="reg-username">Usuario:</label>
+                <input type="text" id="reg-username" name="username" required><br><br>
+                <label for="reg-password">Contraseña:</label>
+                <input type="password" id="reg-password" name="password" required><br><br>
+                <button type="submit">Registrarse</button>
+                <p id="register-error" class="error"></p>
+            </form>
+            <p>¿Ya tienes cuenta? <a href="#" id="show-login">Inicia sesión aquí</a></p>
+        </div>
+        <p id="auth-message" class="message" style="display:none;"></p>
+    </div>
+
+    <div id="dashboard-container" style="display:none;">
+    <h1>Dashboard de Estadísticas</h1>
+    <button id="logout-button">Cerrar Sesión</button>
+
+    <div class="chart-row">
+        <div class="chart-container">
+            <h2>Total de Interacciones</h2>
+            <p id="interactions-count" style="font-size: 5em; text-align: center; margin-bottom: 20px;"></p>
+        </div>
+
+        <div class="chart-container">
+            <h2>Temas más frecuentes</h2>
+            <div class="chart-wrapper">
+                <canvas id="top-themes-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Subtemas más frecuentes</h2>
+            <div class="chart-wrapper">
+                <canvas id="top-intents-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/charts.js"></script>
+</body>
+</html>
