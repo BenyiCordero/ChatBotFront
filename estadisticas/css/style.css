@@ -67,7 +67,8 @@ button:hover {
 
 #logout-button {
     background-color: #dc3545;
-    margin-bottom: 40px; /* Espacio debajo del botón de logout */
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 #logout-button:hover {
@@ -143,3 +144,27 @@ button:hover {
 }
 
 
+#h2-dashboard-filtradas{
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: normal;            
+    padding: 10px;
+    background-color: #f5f5f5;     
+}
+
+#dashboard-estadisticas{
+    margin-left: 450px;
+}
+
+select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 13px;
+}

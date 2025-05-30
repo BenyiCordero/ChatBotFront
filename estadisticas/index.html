@@ -37,9 +37,12 @@
         <p id="auth-message" class="message" style="display:none;"></p>
     </div>
 
-    <div id="dashboard-container" style="display:none;">
-    <h1>Dashboard de Estadísticas</h1>
-    <button id="logout-button">Cerrar Sesión</button>
+<div id="dashboard-container" style="display:none;">
+    <div class="header">
+        <h1 id="dashboard-estadisticas">Dashboard de Estadísticas</h1>
+        <button id="logout-button">Cerrar Sesión</button>
+    </div>
+    
 
     <div class="chart-row">
         <div class="chart-container">
@@ -61,7 +64,101 @@
             </div>
         </div>
     </div>
+    <h1 id="h2-dashboard-filtradas">Dashboard de Estadísticas filtradas</h1>
+    <div class="chart-row">
+        <div class="chart-container">
+            <h2>Total de Interacciones</h2>
+            <label for="Mes">Mes</label>
+            <select name="Meses" id="mesesFI">
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            <label for="Anio">Año</label>
+            <select name="Año" id="anioFI">
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+            </select>
+            <p id="interactions-count-f" style="font-size: 5em; text-align: center; margin-bottom: 20px;"></p>
+        </div>
+
+        <div class="chart-container">
+            <h2>Temas más frecuentes</h2>
+            <label for="Mes">Mes</label>
+            <select name="Meses" id="mesesFT">
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            <label for="Anio">Año</label>
+            <select name="Año" id="anioFT">
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+            </select>
+            <div class="chart-wrapper">
+                <canvas id="top-intents-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Subtemas más frecuentes</h2>
+            <label for="Mes">Mes</label>
+            <select name="Meses" id="mesesFS">
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+            <label for="Anio">Año</label>
+            <select name="Año" id="anioFS">
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+            </select>
+            <div class="chart-wrapper">
+                <canvas id="top-intents-chart"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="js/utils.js"></script>
