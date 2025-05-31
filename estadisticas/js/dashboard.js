@@ -13,29 +13,26 @@ const TOTAL_CONSULTAS_API_URL = `${BASE_API_URL}/consultas`; // Endpoint para el
 const TEMA_FILTRADO_API_URL = `${BASE_API_URL}/consultas/por-tema/filtrado`; // Endpoint para estadísticas por tema
 const SUBTEMA_FILTRADO_API_URL = `${BASE_API_URL}/consultas/por-subtema/filtrado`; // Endpoint para estadísticas por tema
 const TOTAL_CONSULTAS_FILTRADO_API_URL = `${BASE_API_URL}/consultas/filtrado`;
-document.addEventListener('DOMContentLoaded', () => {
-    document.addEventListener('dashboardLoaded', loadDashboardData);
-});
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Llama primero a cargar el dashboard sin filtro o con filtro inicial
-    loadDashboardData();
+    loadDashboardData(); // Carga inicial
 
-    // Selectores de mes y año filtrados
     const mesSelect = document.getElementById('mesesFI');
     const anioSelect = document.getElementById('anioFI');
+    const mesSelectFT = document.getElementById('mesFT');
+    const anioSelectFT = document.getElementById('anioFT');
+    const mesSelectFS = document.getElementById('mesFS');
+    const anioSelectFS = document.getElementById('anioFS');
 
-    // Escucha cambios en mes y año para recargar datos filtrados
-    if (mesSelect && anioSelect) {
-        mesSelect.addEventListener('change', () => {
-            loadDashboardData();
-        });
-        anioSelect.addEventListener('change', () => {
-            loadDashboardData();
-        });
-    }
+    if (mesSelect) mesSelect.addEventListener('change', loadDashboardData);
+    if (anioSelect) anioSelect.addEventListener('change', loadDashboardData);
+    if (mesSelectFT) mesSelectFT.addEventListener('change', loadDashboardData);
+    if (anioSelectFT) anioSelectFT.addEventListener('change', loadDashboardData);
+    if (anioSelectFS) anioSelectFS.addEventListener('change', loadDashboardData);
+    if (mesSelectFS) mesSelectFS.addEventListener('change', loadDashboardData);
 });
 
+document.addEventListener('dashboardLoaded', loadDashboardData);
 // Función para cargar y mostrar los datos del dashboard
 async function loadDashboardData() {
     console.log('Cargando datos del dashboard desde la API...');
@@ -145,6 +142,76 @@ async function loadDashboardData() {
         if (interactionsCountElementF) {
             interactionsCountElementF.textContent = totalConsultasF;
         }
+        
+         // --- Cargar datos para "Temas más frecuentes" FILTRADO ---
+        const mesSelectFT = document.getElementById('mesFT');
+        const mesNumeroFT = parseInt(mesSelectFT.value);
+
+        if (isNaN(mesNumeroFT)) {
+            console.error('Mes inválido. Asegúrate de seleccionar un mes válido antes de cargar el dashboard.');
+            return;
+        }
+
+        const anioSelectFT = document.getElementById('anioFT'); 
+        const anioFT = parseInt(anioSelectFT?.value || new Date().getFullYear());
+        const urlFT = `${TEMA_FILTRADO_API_URL}?year=${anioFT}&month=${mesNumeroFT}`;
+
+// <-- Asegúrate de tener este <select> también
+        console.log(`Realizando solicitud a: ${urlFT}`);
+        const responseTemaFT = await fetch(urlFT, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+        });
+
+        const temaDataFT = await responseTemaFT.json();
+        console.log('Respuesta de la API de tema:', temaDataFT);
+
+        if (!responseTemaFT.ok) {
+            console.error('Error al obtener las estadísticas por tema.');
+        }
+
+        const temaLabelsFT = Object.keys(temaDataFT);
+        const temaDataValuesFT = Object.values(temaDataFT);
+        createTopIntentsChart('top-themes-chart-FT', temaLabelsFT, temaDataValuesFT);
+        
+                 // --- Cargar datos para "Subtemas más frecuentes" FILTRADO ---
+        const mesSelectFS = document.getElementById('mesFS');
+        const mesNumeroFS = parseInt(mesSelectFS.value);
+
+        if (isNaN(mesNumeroFS)) {
+            console.error('Mes inválido. Asegúrate de seleccionar un mes válido antes de cargar el dashboard.');
+            return;
+        }
+
+        const anioSelectFS = document.getElementById('anioFS'); 
+        const anioFS = parseInt(anioSelectFS?.value || new Date().getFullYear());
+        const urlFS = `${TEMA_FILTRADO_API_URL}?year=${anioFS}&month=${mesNumeroFS}`;
+
+// <-- Asegúrate de tener este <select> también
+        console.log(`Realizando solicitud a: ${urlFS}`);
+        const responseTemaFS = await fetch(urlFS, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+        });
+
+        const temaDataFS = await responseTemaFS.json();
+        console.log('Respuesta de la API de tema:', temaDataFS);
+
+        if (!responseTemaFS.ok) {
+            console.error('Error al obtener las estadísticas por tema.');
+        }
+
+        const temaLabelsFS = Object.keys(temaDataFS);
+        const temaDataValuesFS = Object.values(temaDataFS);
+        createTopIntentsChart('top-intents-chart-FS', temaLabelsFS, temaDataValuesFS);
+        
+
 
         console.log('Dashboard cargado con éxito.');
 
@@ -152,6 +219,3 @@ async function loadDashboardData() {
         console.error('Error al cargar los datos del dashboard:', error);
     }
 }
-
-// Escucha el evento 'dashboardLoaded' que se dispara desde auth.js
-document.addEventListener('dashboardLoaded', loadDashboardData);
