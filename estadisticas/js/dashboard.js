@@ -188,7 +188,7 @@ async function loadDashboardData() {
 
         const anioSelectFS = document.getElementById('anioFS'); 
         const anioFS = parseInt(anioSelectFS?.value || new Date().getFullYear());
-        const urlFS = `${TEMA_FILTRADO_API_URL}?year=${anioFS}&month=${mesNumeroFS}`;
+        const urlFS = `${SUBTEMA_FILTRADO_API_URL}?year=${anioFS}&month=${mesNumeroFS}`;
 
 // <-- Asegúrate de tener este <select> también
         console.log(`Realizando solicitud a: ${urlFS}`);

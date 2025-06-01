@@ -41,12 +41,16 @@ function checkAuthStatus() {
 
 // Función para mostrar la vista de inicio de sesión y ocultar otras
 function showLoginView() {
+    showElement(authContainer);
     showElement(loginContainer);
     hideElement(registerContainer);
     hideElement(dashboardContainer);
     clearError(loginError);
     clearError(registerError);
     clearMessage(authMessage); // Limpia cualquier mensaje de éxito/información
+
+    loginForm.username.value = '';
+    loginForm.password.value = '';
 }
 
 // Función para mostrar la vista de registro y ocultar otras
@@ -163,7 +167,7 @@ registerForm.addEventListener('submit', async (event) => {
 // Manejador del evento de clic del botón de cerrar sesión
 logoutButton.addEventListener('click', () => {
     localStorage.removeItem('authToken'); // Elimina el token de autenticación
-    showLoginView(); // Vuelve a la vista de login
+        showLoginView(); // Vuelve a la vista de login
 });
 
 // Manejadores para alternar entre formularios
