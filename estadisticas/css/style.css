@@ -1,10 +1,17 @@
 body {
     font-family: sans-serif;
     margin: 20px;
-    background-color: #f4f4f4;
+    background-image: url('../assets/fondoMejorado.png'); /* Reemplaza con la ruta correcta */
+    background-size: cover; /* Cubre todo el fondo */
+    background-repeat: no-repeat; /* Evita la repetición */
+    background-position: center; /* Centra la imagen (opcional) */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    
 }
 
 h1, h2 {
@@ -14,7 +21,7 @@ h1, h2 {
 }
 
 #auth-container { /* Contenedor padre para las vistas de login y registro */
-    background-color: #fff;
+    background-color: rgba(250, 237, 237, 0.95);
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -126,12 +133,13 @@ button:hover {
     gap: 20px;
     justify-content: space-between;
     margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .chart-container {
     flex: 1;
     min-width: 400px;
-    background-color: #f8f8f8;
+    background-color: rgba(243, 243, 243, 0.95);
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -141,12 +149,6 @@ button:hover {
     position: relative;
     height: 400px;
     width: 100%;
-}
-
-
-#h2-dashboard-filtradas{
-    margin-top: 80px;
-    margin-bottom: 80px;
 }
 
 .header {
@@ -159,6 +161,11 @@ button:hover {
 
 #dashboard-estadisticas{
     margin-left: 450px;
+}
+
+#titulo-dashboard{
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 select {
