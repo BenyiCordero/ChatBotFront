@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estadísticas del Chatbot</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="assets/icon.png">
 </head>
 <body>
 
@@ -37,36 +38,8 @@
         <p id="auth-message" class="message" style="display:none;"></p>
     </div>
 
-    <div id="dashboard-container" style="display:none;">
-    <h1>Dashboard de Estadísticas</h1>
-    <button id="logout-button">Cerrar Sesión</button>
-
-    <div class="chart-row">
-        <div class="chart-container">
-            <h2>Total de Interacciones</h2>
-            <p id="interactions-count" style="font-size: 5em; text-align: center; margin-bottom: 20px;"></p>
-        </div>
-
-        <div class="chart-container">
-            <h2>Temas más frecuentes</h2>
-            <div class="chart-wrapper">
-                <canvas id="top-themes-chart"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-container">
-            <h2>Subtemas más frecuentes</h2>
-            <div class="chart-wrapper">
-                <canvas id="top-intents-chart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/auth.js"></script>
-    <script type="module" src="js/dashboard.js"></script>
-    <script type="module" src="js/charts.js"></script>
 </body>
 </html>
