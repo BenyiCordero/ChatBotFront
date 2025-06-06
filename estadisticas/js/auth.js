@@ -5,7 +5,7 @@
 import { showElement, hideElement, displayError, clearError, displayMessage, clearMessage } from './utils.js';
 
 // Obtiene referencias a los elementos del DOM
-const authContainer = document.getElementById('auth-container'); // Contenedor padre de login/registro
+const authContainer = document.getElementById('auth-container');
 const loginContainer = document.getElementById('login-container');
 const registerContainer = document.getElementById('register-container');
 const dashboardContainer = document.getElementById('dashboard-container');
@@ -19,167 +19,169 @@ const showLoginLink = document.getElementById('show-login');
 
 const loginError = document.getElementById('login-error');
 const registerError = document.getElementById('register-error');
-const authMessage = document.getElementById('auth-message'); // Elemento para mensajes de éxito/información
+const authMessage = document.getElementById('auth-message');
 
-// URL base de tu API de Spring Boot
-// ¡¡¡IMPORTANTE!!!: Reemplaza 'https://your-spring-boot-api.com' con la URL base real de tu API.
-// Ejemplos: 'http://localhost:8080' si la ejecutas localmente, o el dominio de tu servidor.
 const BASE_API_URL = 'http://127.0.0.1:8081';
 const LOGIN_API_URL = `${BASE_API_URL}/auth/login`;
 const REGISTER_API_URL = `${BASE_API_URL}/auth/register`;
 
 // Función para verificar el estado de autenticación al cargar la página
-// Ahora verifica si hay un token de autenticación en localStorage.
 function checkAuthStatus() {
+    console.log('--- checkAuthStatus called ---');
+    console.log('Current path:', window.location.pathname);
     const authToken = localStorage.getItem('authToken');
+    console.log('authToken:', authToken ? 'exists' : 'does not exist');
+
+    // Determinamos si estamos en una "página de login" (que podría ser login.html o incluso la raíz si redirige allí)
+    // Asumimos que login.html es la única página de login explícita.
+    const isOnLoginPage = window.location.pathname.includes('login.html');
+    console.log('Is on login page:', isOnLoginPage);
+
     if (authToken) {
-        showDashboard();
+        // El usuario está autenticado
+        console.log('User is authenticated.');
+        if (isOnLoginPage) {
+            // Si está en la página de login con un token, redirigir al dashboard
+            console.log('On login page with token. Redirecting to dashboard.html');
+            window.location.href = 'dashboard.html';
+        } else {
+            // Si está en el dashboard con un token, quedarse aquí (no hacer nada)
+            console.log('On dashboard page with token. Staying here.');
+            // Aquí puedes disparar el evento si dashboard.js lo necesita para cargar datos
+            // document.dispatchEvent(new Event('dashboardLoaded')); // Descomentar si es necesario
+        }
     } else {
-        showLoginView(); // Muestra la vista de login por defecto
-    }
-}
-
-// Función para mostrar la vista de inicio de sesión y ocultar otras
-function showLoginView() {
-    showElement(authContainer);
-    showElement(loginContainer);
-    hideElement(registerContainer);
-    hideElement(dashboardContainer);
-    clearError(loginError);
-    clearError(registerError);
-    clearMessage(authMessage); // Limpia cualquier mensaje de éxito/información
-
-    loginForm.username.value = '';
-    loginForm.password.value = '';
-}
-
-// Función para mostrar la vista de registro y ocultar otras
-function showRegisterView() {
-    hideElement(loginContainer);
-    showElement(registerContainer);
-    hideElement(dashboardContainer);
-    clearError(loginError);
-    clearError(registerError);
-    clearMessage(authMessage); // Limpia cualquier mensaje de éxito/información
-}
-
-// Función para mostrar el dashboard y ocultar los contenedores de autenticación
-function showDashboard() {
-    hideElement(authContainer); // Oculta el contenedor padre de login/registro
-    showElement(dashboardContainer);
-    // Dispara un evento para que dashboard.js sepa que debe cargar los datos
-    document.dispatchEvent(new Event('dashboardLoaded'));
-}
-
-// Manejador del evento de envío del formulario de inicio de sesión
-loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita el envío predeterminado del formulario
-
-    const username = loginForm.username.value;
-    const password = loginForm.password.value;
-
-    clearError(loginError); // Limpia errores anteriores
-    clearMessage(authMessage); // Oculta cualquier mensaje previo
-
-    try {
-        console.log('Intentando iniciar sesión con:', { username, password });
-        // Realiza la solicitud a la API de login de Spring Boot
-        const response = await fetch(LOGIN_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: username, password }),
-        });
-
-        // Depuración: Log de la respuesta completa de la API
-        const responseData = await response.json();
-        console.log('Respuesta de la API de login:', responseData);
-
-        if (!response.ok) {
-            // Si la respuesta no es OK (ej. 401 Unauthorized, 400 Bad Request)
-            // Asume que el mensaje de error puede venir en un campo 'message' o similar
-            throw new Error(responseData.message || 'Credenciales inválidas. Por favor, inténtalo de nuevo.');
-        }
-
-        // Asume que la API devuelve un token en el campo 'token' de la respuesta (TokenResponse)
-        if (responseData.access_token) {
-        localStorage.setItem('authToken', responseData.access_token);
-        displayMessage(authMessage, '¡Inicio de sesión exitoso!');
-        showDashboard();
+        // El usuario NO está autenticado
+        console.log('User is NOT authenticated.');
+        if (!isOnLoginPage) {
+            // Si no está en la página de login Y no tiene token, redirigir a login.html
+            console.log('Not on login page without token. Redirecting to login.html');
+            window.location.href = 'login.html';
         } else {
-        displayError(loginError, 'Respuesta de API inesperada: no se recibió access_token.');
+            // Si está en la página de login y no tiene token, quedarse aquí
+            console.log('On login page without token. Staying here.');
+            // Asegúrate de que la vista de login se muestre si es necesario
+            // showLoginView(); // Descomentar si esta función debe ejecutar la lógica de visibilidad en login.html
         }
-
-    } catch (error) {
-        console.error('Error durante el inicio de sesión:', error);
-        displayError(loginError, error.message || 'Error al conectar con el servidor. Por favor, verifica la URL de la API y la consola para más detalles.');
     }
-});
+    console.log('--- checkAuthStatus end ---');
+}
 
-// Manejador del evento de envío del formulario de registro
-registerForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita el envío predeterminado del formulario
+// ... (el resto de tu código auth.js sigue igual) ...
 
-    const username = registerForm['reg-username'].value; // Usa el ID del input
-    const password = registerForm['reg-password'].value; // Usa el ID del input
+// Manejador del evento de envío del formulario de inicio de sesión (solo relevante para login.html)
+if (loginForm) {
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    clearError(registerError); // Limpia errores anteriores
-    clearMessage(authMessage); // Oculta cualquier mensaje previo
+        const username = loginForm.username.value;
+        const password = loginForm.password.value;
 
-    try {
-        console.log('Intentando registrar con:', { username, password });
-        // Realiza la solicitud a la API de registro de Spring Boot
-        const response = await fetch(REGISTER_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }), // Envía username y password en formato JSON
-        });
+        if (loginError) clearError(loginError);
+        if (authMessage) clearMessage(authMessage);
 
-        // Depuración: Log de la respuesta completa de la API
-        const responseData = await response.json();
-        console.log('Respuesta de la API de registro:', responseData);
+        try {
+            console.log('Intentando iniciar sesión con:', { username, password });
+            const response = await fetch(LOGIN_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: username, password }),
+            });
 
-        if (!response.ok) {
-            // Si la respuesta no es OK (ej. 409 Conflict si el usuario ya existe)
-            throw new Error(responseData.message || 'Error al registrar el usuario. Inténtalo de nuevo.');
+            const responseData = await response.json();
+            console.log('Respuesta de la API de login:', responseData);
+
+            if (!response.ok) {
+                throw new Error(responseData.message || 'Credenciales inválidas. Por favor, inténtalo de nuevo.');
+            }
+
+            if (responseData.access_token) {
+                localStorage.setItem('authToken', responseData.access_token);
+                if (authMessage) displayMessage(authMessage, '¡Inicio de sesión exitoso!');
+                console.log('Login successful. Redirecting to dashboard.html');
+                window.location.href = 'dashboard.html'; // Redirección a dashboard.html
+            } else {
+                if (loginError) displayError(loginError, 'Respuesta de API inesperada: no se recibió access_token.');
+            }
+
+        } catch (error) {
+            console.error('Error durante el inicio de sesión:', error);
+            if (loginError) displayError(loginError, error.message || 'Error al conectar con el servidor. Por favor, verifica la URL de la API y la consola para más detalles.');
         }
+    });
+}
 
-        // Asume que la API devuelve un token en el campo 'token' después de un registro exitoso
-        if (responseData.token) {
-            localStorage.setItem('authToken', responseData.token); // Guarda el token de autenticación
-            displayMessage(authMessage, '¡Registro exitoso! Has iniciado sesión automáticamente.');
-            showDashboard();
-        } else {
-            displayError(registerError, 'Registro exitoso, pero no se recibió token. Por favor, inicia sesión.');
-            showLoginView(); // Si no hay token, vuelve a la vista de login
+
+// Manejador del evento de envío del formulario de registro (solo relevante para login.html)
+if (registerForm) {
+    registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const username = registerForm['reg-username'].value;
+        const password = registerForm['reg-password'].value;
+
+        if (registerError) clearError(registerError);
+        if (authMessage) clearMessage(authMessage);
+
+        try {
+            console.log('Intentando registrar con:', { username, password });
+            const response = await fetch(REGISTER_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const responseData = await response.json();
+            console.log('Respuesta de la API de registro:', responseData);
+
+            if (!response.ok) {
+                throw new Error(responseData.message || 'Error al registrar el usuario. Inténtalo de nuevo.');
+            }
+
+            if (responseData.token) {
+                localStorage.setItem('authToken', responseData.token);
+                if (authMessage) displayMessage(authMessage, '¡Registro exitoso! Has iniciado sesión automáticamente.');
+                console.log('Registration successful. Redirecting to dashboard.html');
+                window.location.href = 'dashboard.html'; // Redirección después de registro exitoso
+            } else {
+                if (registerError) displayError(registerError, 'Registro exitoso, pero no se recibió token. Por favor, inicia sesión.');
+                showLoginView();
+            }
+
+        } catch (error) {
+            console.error('Error durante el registro:', error);
+            if (registerError) displayError(registerError, error.message || 'Error al conectar con el servidor para el registro. Verifica la URL de la API y la consola.');
         }
+    });
+}
 
-    } catch (error) {
-        console.error('Error durante el registro:', error);
-        displayError(registerError, error.message || 'Error al conectar con el servidor para el registro. Verifica la URL de la API y la consola.');
-    }
-});
+// Manejador del evento de clic del botón de cerrar sesión (existe en dashboard.html)
+if (logoutButton) {
+    logoutButton.addEventListener('click', () => {
+        console.log('Logout button clicked. Removing token and redirecting to login.html');
+        localStorage.removeItem('authToken'); // Elimina el token de autenticación
+        window.location.href = 'login.html'; // REDIRECCIÓN A LA PÁGINA DE LOGIN
+    });
+}
 
+// Manejadores para alternar entre formularios (solo relevantes para login.html)
+if (showRegisterLink) {
+    showRegisterLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        showRegisterView();
+    });
+}
 
-// Manejador del evento de clic del botón de cerrar sesión
-logoutButton.addEventListener('click', () => {
-    localStorage.removeItem('authToken'); // Elimina el token de autenticación
-        showLoginView(); // Vuelve a la vista de login
-});
-
-// Manejadores para alternar entre formularios
-showRegisterLink.addEventListener('click', (event) => {
-    event.preventDefault();
-    showRegisterView();
-});
-
-showLoginLink.addEventListener('click', (event) => {
-    event.preventDefault();
-    showLoginView();
-});
+if (showLoginLink) {
+    showLoginLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        showLoginView();
+    });
+}
 
 // Llama a checkAuthStatus cuando el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', checkAuthStatus);

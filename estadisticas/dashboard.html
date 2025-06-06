@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="icon.png">
+</head>
+<body>
+    <div id="dashboard-container">
+        <div id="div-dashboard-estadisticas" class="header">
+            <h1 id="dashboard-estadisticas">Dashboard de Estadísticas</h1>
+            <button id="logout-button">Cerrar Sesión</button>
+        </div>
+        
+
+        <div class="chart-row" id="general-dashboard-section">
+            <div class="chart-container" id="interactions-chart-container">
+                <h2>Total de Interacciones</h2>
+                <p id="interactions-count" style="font-size: 5em; text-align: center; margin-bottom: 20px;"></p>
+                <br></br>
+                <br></br>
+                <button id="exportar-csv-button">Exportar a CSV</button>
+                <br></br>
+                <button id="exportar-pdf-button">Exportar a PDF</button>
+            </div>
+
+            <div class="chart-container">
+                <h2>Temas más frecuentes</h2>
+                <div class="chart-wrapper">
+                    <canvas id="top-themes-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>Subtemas más frecuentes</h2>
+                <div class="chart-wrapper">
+                    <canvas id="top-intents-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="div-dashboard-estadisticas-f" class="header">
+            <h1 id="dashboard-estadisticas">Dashboard de Estadísticas</h1>
+        </div>
+            
+        <div class="chart-row" id="filtered-dashboard-section">
+            <div class="chart-container" id="filtered-interactions-chart-container">
+                <h2>Total de Interacciones</h2>
+                <label for="Mes">Mes</label>
+                <select name="Meses" id="mesesFI">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <label for="Anio">Año</label>
+                <select name="Año" id="anioFI">
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                </select>
+                <p id="interactions-count-f" style="font-size: 5em; text-align: center; margin-bottom: 20px;"></p>
+                <br></br>
+                <br></br>
+                <button id="exportar-filtrados-csv-button">Exportar a CSV</button>
+                <br></br>
+                <button id="exportar-filtrados-pdf-button">Exportar a PDF</button>
+            </div>
+
+            <div class="chart-container">
+                <h2>Temas más frecuentes</h2>
+                <label for="Mes">Mes</label>
+                <select name="Meses" id="mesFT">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <label for="Anio">Año</label>
+                <select name="Año" id="anioFT">
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                </select>
+                <div class="chart-wrapper">
+                    <canvas id="top-themes-chart-FT"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>Subtemas más frecuentes</h2>
+                <label for="Mes">Mes</label>
+                <select name="Meses" id="mesFS">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <label for="Anio">Año</label>
+                <select name="Año" id="anioFS">
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                </select>
+                <div class="chart-wrapper">
+                    <canvas id="top-intents-chart-FS"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h2>Total de usuarios activos</h2>
+                <label for="Mes">Mes</label>
+                <select name="Meses" id="mesFI2">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <label for="Semana">Semana</label>
+                <select name="Semana" id="semanaFI2">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <label for="Anio">Año</label>
+                <select name="Año" id="anioFI2">
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                </select>
+                <p id="interactions-count-FI2" style="font-size: 5em; text-align: center; margin-bottom: 10px;"></p>
+            </div>
+            <div class="chart-container">
+                <h2>Configurar Prompt</h2>
+                <button id="go-to-prompt-button">Ir a Configurar Prompt</button>
+                <br></br>
+                <h2>Exportar toda la hoja de estadisticas a CSV</h2>
+                <button id="exportar-todo-csv-button">Exportar a CSV</button>
+                <br></br>
+                <h2>Exportar toda la hoja de estadisticas a PDF</h2>
+                <button id="exportar-todo-pdf-button">Exportar a PDF</button>
+            </div>
+        </div>
+    </div>
+    <div id="messageBox" class="message-box hidden" role="alert">
+        <span id="messageText"></span>
+        <button type="button" class="close-button" onclick="this.parentElement.classList.add('hidden');">&times;</button>
+    </div>
+
+    <div id="confirmationModal" class="confirmation-modal hidden">
+        <div class="confirmation-content">
+            <p id="confirmationMessage"></p>
+            <div class="confirmation-actions">
+                <button id="confirmYes" class="confirmation-button">Sí</button>
+                <button id="confirmNo" class="confirmation-button no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/charts.js"></script>
+
+</body>
+</html>

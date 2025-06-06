@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurar Prompt</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="icon.png">
+</head>
+<body>
+    <div class="main-prompt-container"> <h1>Configurar Prompt del Sistema</h1>
+
+        <div class="prompt-editor">
+            <label for="system-prompt">Edita el Prompt del Sistema:</label>
+            <textarea id="system-prompt" rows="20" cols="80" placeholder="Introduce aquí el prompt base para el sistema..."></textarea>
+        </div>
+
+        <div class="prompt-actions">
+            <button id="update-prompt-button">Actualizar Prompt</button>
+            <button id="back-to-dashboard-button">Regresar a Estadísticas</button>
+        </div>
+
+        <p id="prompt-message" class="info-message"></p>
+        <p id="prompt-error" class="error-message"></p>
+    </div>
+
+        <div id="confirmationModal" class="confirmation-modal hidden">
+        <div class="confirmation-content">
+            <p id="confirmationMessage"></p>
+            <div class="confirmation-actions">
+                <button id="confirmYes" class="confirmation-button">Sí</button>
+                <button id="confirmNo" class="confirmation-button no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/prompt.js"></script>
+</body>
+</html>
