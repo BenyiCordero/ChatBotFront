@@ -7,18 +7,12 @@ import { createTopIntentsChart } from './charts.js';
 // URL base de tu API de Spring Boot
 // ¡¡¡IMPORTANTE!!!: Asegúrate de que esta URL coincida con la BASE_API_URL en auth.js
 const BASE_API_URL = 'http://127.0.0.1:8081';
-const SUBTEMA_API_URL = `${BASE_API_URL}/consultas/por-subtema`; // Endpoint para estadísticas por subtema
-const TEMA_API_URL = `${BASE_API_URL}/consultas/por-tema`; // Endpoint para estadísticas por tema
 const TOTAL_CONSULTAS_API_URL = `${BASE_API_URL}/consultas`; // Endpoint para el total de consultas
-const TEMA_FILTRADO_API_URL = `${BASE_API_URL}/consultas/por-tema/filtrado`; // Endpoint para estadísticas por tema
-const SUBTEMA_FILTRADO_API_URL = `${BASE_API_URL}/consultas/por-subtema/filtrado`; // Endpoint para estadísticas por subtema
-const TOTAL_CONSULTAS_FILTRADO_API_URL = `${BASE_API_URL}/consultas/filtrado`;
-const TOTAL_CONSULTAS_FILTRADO2_API_URL = `${BASE_API_URL}/consultas/por-year-month-week/filtrado`;
+const TOTAL_TEMAS = `${BASE_API_URL}/consultas/por-temav2`; //Endpoint para el porcentaje de temas
+const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/por-subtemav2`; //Endpoint para el porcentaje de subtemas
+const TOTAL_USUARIOS = `${BASE_API_URL}/consultas/cantidad-usuarios`; //Endpoint para el total de usuarios.
 
-//nuevos EP
-const TOTAL_TEMAS = `${BASE_API_URL}/consultas/por-temav2`;
-const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/por-subtemav2`;
-const TOTAL_USUARIOS = `${BASE_API_URL}/consultas/cantidad-usuarios`;
+
 
 // Variables globales para almacenar los datos obtenidos de la API para su exportación
 let totalConsultasData = null;
