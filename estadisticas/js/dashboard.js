@@ -7,13 +7,12 @@ import { createTopIntentsChart } from './charts.js';
 // URL base de tu API de Spring Boot
 // ¡¡¡IMPORTANTE!!!: Asegúrate de que esta URL coincida con la BASE_API_URL en auth.js
 const BASE_API_URL = 'http://127.0.0.1:8081';
-const SUBTEMA_API_URL = `${BASE_API_URL}/consultas/por-subtema`; // Endpoint para estadísticas por subtema
-const TEMA_API_URL = `${BASE_API_URL}/consultas/por-tema`; // Endpoint para estadísticas por tema
 const TOTAL_CONSULTAS_API_URL = `${BASE_API_URL}/consultas`; // Endpoint para el total de consultas
-const TEMA_FILTRADO_API_URL = `${BASE_API_URL}/consultas/por-tema/filtrado`; // Endpoint para estadísticas por tema
-const SUBTEMA_FILTRADO_API_URL = `${BASE_API_URL}/consultas/por-subtema/filtrado`; // Endpoint para estadísticas por subtema
-const TOTAL_CONSULTAS_FILTRADO_API_URL = `${BASE_API_URL}/consultas/filtrado`;
-const TOTAL_CONSULTAS_FILTRADO2_API_URL = `${BASE_API_URL}/consultas/por-year-month-week/filtrado`;
+const TOTAL_TEMAS = `${BASE_API_URL}/consultas/por-temav2`; //Endpoint para el porcentaje de temas
+const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/por-subtemav2`; //Endpoint para el porcentaje de subtemas
+const TOTAL_USUARIOS = `${BASE_API_URL}/consultas/cantidad-usuarios`; //Endpoint para el total de usuarios.
+
+
 
 // Variables globales para almacenar los datos obtenidos de la API para su exportación
 let totalConsultasData = null;
@@ -440,7 +439,7 @@ async function loadDashboardData() {
         document.getElementById('interactions-count').textContent = totalConsultasData;
 
         // --- Cargar datos para "Temas más frecuentes" (General) ---
-        const responseTema = await fetch(TEMA_API_URL, {
+        const responseTema = await fetch(TOTAL_TEMAS, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
         });
@@ -449,7 +448,7 @@ async function loadDashboardData() {
         createTopIntentsChart('top-themes-chart', Object.keys(temaDataGlobal), Object.values(temaDataGlobal));
 
         // --- Cargar datos para "Subtemas más frecuentes" (General) ---
-        const responseSubtema = await fetch(SUBTEMA_API_URL, {
+        const responseSubtema = await fetch(TOTAL_SUBTEMAS, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
         });
@@ -464,7 +463,7 @@ async function loadDashboardData() {
         if (isNaN(mesNumero)) mesNumero = new Date().getMonth() + 1;
         if (isNaN(anio)) anio = new Date().getFullYear();
 
-        const urlFilteredTotal = `${TOTAL_CONSULTAS_FILTRADO_API_URL}?year=${anio}&month=${mesNumero}`;
+        const urlFilteredTotal = `${TOTAL_CONSULTAS_API_URL}?year=${anio}&month=${mesNumero}`;
         const responseTotalConsultasF = await fetch(urlFilteredTotal, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
@@ -479,7 +478,7 @@ async function loadDashboardData() {
         if (isNaN(mesNumeroFT)) mesNumeroFT = new Date().getMonth() + 1;
         if (isNaN(anioFT)) anioFT = new Date().getFullYear();
 
-        const urlFT = `${TEMA_FILTRADO_API_URL}?year=${anioFT}&month=${mesNumeroFT}`;
+        const urlFT = `${TOTAL_TEMAS}?year=${anioFT}&month=${mesNumeroFT}`;
         const responseTemaFT = await fetch(urlFT, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
@@ -494,7 +493,7 @@ async function loadDashboardData() {
         if (isNaN(mesNumeroFS)) mesNumeroFS = new Date().getMonth() + 1;
         if (isNaN(anioFS)) anioFS = new Date().getFullYear();
 
-        const urlFS = `${SUBTEMA_FILTRADO_API_URL}?year=${anioFS}&month=${mesNumeroFS}`;
+        const urlFS = `${TOTAL_SUBTEMAS}?year=${anioFS}&month=${mesNumeroFS}`;
         const responseTemaFS = await fetch(urlFS, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
@@ -512,7 +511,7 @@ async function loadDashboardData() {
         if (isNaN(anioFI2)) anioFI2 = new Date().getFullYear();
         if (isNaN(semanaFI2)) semanaFI2 = 1; // Por defecto a la semana 1 si no es válida
 
-        const urlFI2 = `${TOTAL_CONSULTAS_FILTRADO2_API_URL}?year=${anioFI2}&month=${mesNumeroFI2}&week=${semanaFI2}`;
+        const urlFI2 = `${TOTAL_USUARIOS}?year=${anioFI2}&month=${mesNumeroFI2}&week=${semanaFI2}`;
         const responseTotalConsultasFI2 = await fetch(urlFI2, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
