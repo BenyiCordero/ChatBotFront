@@ -14,7 +14,7 @@ const promptError = document.getElementById('prompt-error');
 // URL de tu API para el prompt
 // ¡¡¡IMPORTANTE!!!: Reemplaza con la URL real de tu endpoint de prompt
 // Por ejemplo: 'http://localhost:8081/api/prompt' o 'http://localhost:8081/admin/prompt'
-const BASE_API_URL = 'http://127.0.0.1:8081/consultas'; // Asegúrate de que esta sea tu URL base
+const BASE_API_URL = 'https://5b61-201-163-190-4.ngrok-free.app/consultas'; // Asegúrate de que esta sea tu URL base
 const PROMPT_API_URL = `${BASE_API_URL}/prompt/1`; // Ajusta esta URL a tu endpoint real
 
 // Función para obtener el prompt actual de la API
@@ -35,7 +35,8 @@ async function fetchPrompt() {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
             }
         });
 
@@ -77,7 +78,8 @@ async function updatePrompt() {
             method: 'PUT', // O 'POST' si tu API lo prefiere para actualizar
             headers: {
                 'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
             },
             body: JSON.stringify({ content: newPrompt })
         });

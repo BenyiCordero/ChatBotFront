@@ -21,7 +21,7 @@ const loginError = document.getElementById('login-error');
 const registerError = document.getElementById('register-error');
 const authMessage = document.getElementById('auth-message');
 
-const BASE_API_URL = 'http://127.0.0.1:8081';
+const BASE_API_URL = 'https://5b61-201-163-190-4.ngrok-free.app';
 const LOGIN_API_URL = `${BASE_API_URL}/auth/login`;
 const REGISTER_API_URL = `${BASE_API_URL}/auth/register`;
 
@@ -86,6 +86,7 @@ if (loginForm) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({ email: username, password }),
             });
@@ -131,6 +132,7 @@ if (registerForm) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({ username, password }),
             });
