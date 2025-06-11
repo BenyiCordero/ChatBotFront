@@ -6,7 +6,7 @@ import { createTopIntentsChart } from './charts.js';
 
 // URL base de tu API de Spring Boot
 // ¡¡¡IMPORTANTE!!!: Asegúrate de que esta URL coincida con la BASE_API_URL en auth.js
-const BASE_API_URL = 'http://127.0.0.1:8081';
+const BASE_API_URL = 'https://0331-2806-2f0-6001-b2c5-d4e-abd6-a0b1-3adf.ngrok-free.app'; //Cambiar la base api cada que se cambie de tunel en ngrok o si se corre la api en local la base es http://127.0.0.1:8081
 const TOTAL_CONSULTAS_API_URL = `${BASE_API_URL}/consultas`; // Endpoint para el total de consultas
 const TOTAL_TEMAS = `${BASE_API_URL}/consultas/por-temav2`; //Endpoint para el porcentaje de temas
 const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/por-subtemav2`; //Endpoint para el porcentaje de subtemas
@@ -422,6 +422,7 @@ async function loadDashboardData() {
     showMessage('Cargando datos del dashboard...', 'info');
 
     const authToken = localStorage.getItem('authToken');
+    console.log(authToken)
     if (!authToken) {
         console.error('No se encontró token de autenticación. Redirigiendo al login.');
         window.location.href = 'login.html';
@@ -432,7 +433,7 @@ async function loadDashboardData() {
         // --- Obtener el total de consultas (General) ---
         const responseTotalConsultas = await fetch(TOTAL_CONSULTAS_API_URL, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true'  },
         });
         if (!responseTotalConsultas.ok) throw new Error(`Error al obtener total de consultas: ${responseTotalConsultas.statusText}`);
         totalConsultasData = await responseTotalConsultas.json(); // Almacenar datos globalmente
@@ -441,7 +442,7 @@ async function loadDashboardData() {
         // --- Cargar datos para "Temas más frecuentes" (General) ---
         const responseTema = await fetch(TOTAL_TEMAS, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTema.ok) throw new Error(`Error al obtener temas: ${responseTema.statusText}`);
         temaDataGlobal = await responseTema.json(); // Almacenar datos globalmente
@@ -450,7 +451,7 @@ async function loadDashboardData() {
         // --- Cargar datos para "Subtemas más frecuentes" (General) ---
         const responseSubtema = await fetch(TOTAL_SUBTEMAS, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseSubtema.ok) throw new Error(`Error al obtener subtemas: ${responseSubtema.statusText}`);
         subtemaDataGlobal = await responseSubtema.json(); // Almacenar datos globalmente
@@ -466,7 +467,7 @@ async function loadDashboardData() {
         const urlFilteredTotal = `${TOTAL_CONSULTAS_API_URL}?year=${anio}&month=${mesNumero}`;
         const responseTotalConsultasF = await fetch(urlFilteredTotal, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTotalConsultasF.ok) throw new Error(`Error al obtener total de consultas filtradas: ${responseTotalConsultasF.statusText}`);
         totalConsultasFiltradoData = await responseTotalConsultasF.json(); // Almacenar datos globalmente
@@ -481,7 +482,7 @@ async function loadDashboardData() {
         const urlFT = `${TOTAL_TEMAS}?year=${anioFT}&month=${mesNumeroFT}`;
         const responseTemaFT = await fetch(urlFT, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTemaFT.ok) throw new Error(`Error al obtener temas filtrados: ${responseTemaFT.statusText}`);
         temaFiltradoDataGlobal = await responseTemaFT.json(); // Almacenar datos globalmente
@@ -496,7 +497,7 @@ async function loadDashboardData() {
         const urlFS = `${TOTAL_SUBTEMAS}?year=${anioFS}&month=${mesNumeroFS}`;
         const responseTemaFS = await fetch(urlFS, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTemaFS.ok) throw new Error(`Error al obtener subtemas filtrados: ${responseTemaFS.statusText}`);
         subtemaFiltradoDataGlobal = await responseTemaFS.json(); // Almacenar datos globalmente
@@ -514,7 +515,7 @@ async function loadDashboardData() {
         const urlFI2 = `${TOTAL_USUARIOS}?year=${anioFI2}&month=${mesNumeroFI2}&week=${semanaFI2}`;
         const responseTotalConsultasFI2 = await fetch(urlFI2, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTotalConsultasFI2.ok) throw new Error(`Error al obtener total de usuarios activos: ${responseTotalConsultasFI2.statusText}`);
         totalConsultasFI2Data = await responseTotalConsultasFI2.json(); // Almacenar datos globalmente
