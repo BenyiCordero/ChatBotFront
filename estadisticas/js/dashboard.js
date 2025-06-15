@@ -6,7 +6,7 @@ import { createTopIntentsChart } from './charts.js';
 
 // URL base de tu API de Spring Boot
 // ¡¡¡IMPORTANTE!!!: Asegúrate de que esta URL coincida con la BASE_API_URL en auth.js
-const BASE_API_URL = 'https://0331-2806-2f0-6001-b2c5-d4e-abd6-a0b1-3adf.ngrok-free.app'; //Cambiar la base api cada que se cambie de tunel en ngrok o si se corre la api en local la base es http://127.0.0.1:8081
+const BASE_API_URL = 'http://127.0.0.1:8081'; //Cambiar la base api cada que se cambie de tunel en ngrok o si se corre la api en local la base es http://127.0.0.1:8081
 const TOTAL_CONSULTAS_API_URL = `${BASE_API_URL}/consultas`; // Endpoint para el total de consultas
 const TOTAL_TEMAS = `${BASE_API_URL}/consultas/por-temav2`; //Endpoint para el porcentaje de temas
 const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/por-subtemav2`; //Endpoint para el porcentaje de subtemas
