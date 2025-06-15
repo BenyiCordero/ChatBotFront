@@ -21,7 +21,7 @@ const loginError = document.getElementById('login-error');
 const registerError = document.getElementById('register-error');
 const authMessage = document.getElementById('auth-message');
 
-const BASE_API_URL = 'http://localhost:8081'; //Cambiar la base api cada que se cambie de tunel en ngrok o si se corre la api en local la base es http://127.0.0.1:8081
+const BASE_API_URL = 'http://127.0.0.1:8081'; //Cambiar la base api cada que se cambie de tunel en ngrok o si se corre la api en local la base es http://127.0.0.1:8081
 const LOGIN_API_URL = `${BASE_API_URL}/auth/login`;
 const REGISTER_API_URL = `${BASE_API_URL}/auth/register`;
 
