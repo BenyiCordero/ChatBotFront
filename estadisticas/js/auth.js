@@ -91,18 +91,47 @@ if (loginForm) {
                 body: JSON.stringify({ email: username, password }),
             });
 
-            const responseData = await response.json();
-            console.log('Respuesta de la API de login:', responseData);
+            // --- LÓGICA DE MANEJO DE RESPUESTA ---
+            let responseData; // Declara responseData aquí
 
-            if (!response.ok) {
-                throw new Error(responseData.message || 'Credenciales inválidas. Por favor, inténtalo de nuevo.');
+            // CLONA LA RESPUESTA ANTES DE INTENTAR LEER SU CUERPO
+            const clonedResponse = response.clone(); // <-- ¡AQUÍ ESTÁ LA CLAVE!
+
+            try {
+                responseData = await clonedResponse.json(); // Lee la COPIA como JSON
+            } catch (jsonError) {
+                console.warn('Failed to parse response as JSON. Status:', response.status, 'Error:', jsonError);
+                // Si la respuesta no es OK y no es JSON, podemos leer la respuesta ORIGINAL como texto para depuración
+                if (!response.ok) { // Importante: usa la `response` original para el `response.ok`
+                    try {
+                        const textError = await response.text(); // <-- Lee la ORIGINAL como texto aquí
+                        console.warn('Error response body (text):', textError);
+                    } catch (textReadError) {
+                        console.warn('Also failed to read response body as text:', textReadError);
+                    }
+                }
+                responseData = {}; // Asegúrate de que responseData sea un objeto vacío si no se pudo parsear JSON
             }
 
+            console.log('Respuesta de la API de login:', responseData);
+
+            // Verifica si la respuesta NO fue exitosa (código de estado 4xx o 5xx)
+            if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
+                } else if (response.status === 400) {
+                    throw new Error(responseData.message || 'Solicitud incorrecta. Verifica tus datos.');
+                } else {
+                    throw new Error(responseData.message || `Credenciales invalidas`);
+                }
+            }
+
+            // Si llegamos aquí, la respuesta fue OK (status 2xx)
             if (responseData.access_token) {
                 localStorage.setItem('authToken', responseData.access_token);
                 if (authMessage) displayMessage(authMessage, '¡Inicio de sesión exitoso!');
                 console.log('Login successful. Redirecting to dashboard.html');
-                window.location.href = 'dashboard.html'; // Redirección a dashboard.html
+                window.location.href = 'dashboard.html';
             } else {
                 if (loginError) displayError(loginError, 'Respuesta de API inesperada: no se recibió access_token.');
             }
@@ -113,6 +142,7 @@ if (loginForm) {
         }
     });
 }
+
 
 
 // Manejador del evento de envío del formulario de registro (solo relevante para login.html)

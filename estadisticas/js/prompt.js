@@ -66,7 +66,7 @@ async function updatePrompt() {
     clearError(promptError);
     const authToken = localStorage.getItem('authToken');
     const newPrompt = systemPromptTextarea.value;
-    const url = `${BASE_API_URL}/prompt/actualizar/1`;
+    const url = `${BASE_API_URL}/consultas/prompt/actualizar/1`;
 
     if (!authToken) {
         displayError(promptError, 'No estás autenticado. Por favor, inicia sesión para actualizar.');
