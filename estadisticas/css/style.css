@@ -1,10 +1,10 @@
 body {
     font-family: sans-serif;
     margin: 20px;
-    background-image: url('../assets/fondoC.png'); /* Reemplaza con la ruta correcta */
-    background-size: cover; /* Cubre todo el fondo */
-    background-repeat: no-repeat; /* Evita la repetición */
-    background-position: center; /* Centra la imagen (opcional) */
+    background-image: url('../assets/fondoC.png'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,7 +18,7 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
-#auth-container { /* Contenedor padre para las vistas de login y registro */
+#auth-container { 
     background-color: #ECF8F6;
     padding: 30px;
     border-radius: 8px;
@@ -26,11 +26,11 @@ h1, h2 {
     margin-bottom: 20px;
     width: 80%;
     max-width: 600px;
-    text-align: center; /* Centra el contenido dentro del contenedor */
+    text-align: center; 
 }
 
 #login-container, #register-container {
-    padding: 20px 0; /* Espaciado interno */
+    padding: 20px 0;
 }
 
 #login-container h2, #register-container h2 {
@@ -47,7 +47,7 @@ label {
     margin-bottom: 5px;
     font-weight: bold;
     color: #555;
-    text-align: left; /* Alinea las etiquetas a la izquierda */
+    text-align: left; 
 }
 
 input[type="text"],
@@ -68,8 +68,8 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
-    margin-top: 10px; /* Espacio superior para los botones */
-    transition: background-color 0.3s ease; /* Añadida transición para suavidad */
+    margin-top: 10px; 
+    transition: background-color 0.3s ease; 
 }
 
 button:hover {
@@ -82,7 +82,7 @@ button:hover {
     margin-top: 20px;
 }
 
-#mostrarPrompt { /* No estoy seguro si este ID es correcto para un botón en dashboard.html, pero lo mantengo */
+#mostrarPrompt { 
     background-color: #1ABC9C;
     margin-bottom: 20px;
     margin-top: 20px;
@@ -102,7 +102,7 @@ button:hover {
     font-size: 0.9em;
 }
 
-.message { /* Estilo para mensajes de éxito/información (si los usas, de lo contrario, message-box lo reemplaza) */
+.message { 
     color: green;
     margin-top: 10px;
     font-size: 0.9em;
@@ -119,10 +119,9 @@ button:hover {
 #interactions-by-day-chart,
 #top-intents-chart {
     width: 100%;
-    max-height: 300px; /* Ajusta la altura según necesites */
+    max-height: 300px; 
 }
 
-/* Estilos para los enlaces de alternar formularios */
 #auth-container p {
     margin-top: 20px;
     font-size: 0.9em;
@@ -298,7 +297,6 @@ select {
     border: 1px solid #f5c6cb;
 }
 
-/* --- Estilos para el cuadro de mensajes (message-box) --- */
 .message-box {
     position: fixed;
     top: 20px;
@@ -349,7 +347,6 @@ select {
     color: #555;
 }
 
-/* Keyframes para el efecto de fade in/out */
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(-20px); }
     10% { opacity: 1; transform: translateY(0); }
@@ -357,18 +354,17 @@ select {
     100% { opacity: 0; transform: translateY(-20px); }
 }
 
-/* --- Estilos para el cuadro de confirmación (confirmation-modal) --- */
 .confirmation-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+    background-color: rgba(0, 0, 0, 0.6); 
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000; /* Asegura que esté por encima de todo lo demás */
+    z-index: 2000; 
 }
 
 .confirmation-modal.hidden {
@@ -376,13 +372,13 @@ select {
 }
 
 .confirmation-content {
-    background-color: #ECF8F6; /* Consistente con tus contenedores */
+    background-color: #ECF8F6; 
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     max-width: 400px;
-    width: 90%; /* Ajuste para responsividad */
+    width: 90%; 
 }
 
 .confirmation-content p {
@@ -394,7 +390,7 @@ select {
 .confirmation-actions {
     display: flex;
     justify-content: center;
-    gap: 15px; /* Espacio entre los botones */
+    gap: 15px; 
 }
 
 .confirmation-button {
@@ -404,7 +400,7 @@ select {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    background-color: #1ABC9C; /* Color principal de tus botones */
+    background-color: #1ABC9C; 
     color: white;
 }
 
@@ -413,7 +409,7 @@ select {
 }
 
 .confirmation-button.no {
-    background-color: #ccc; /* Un color diferente para el botón 'No' */
+    background-color: #ccc; 
     color: #333;
 }
 
