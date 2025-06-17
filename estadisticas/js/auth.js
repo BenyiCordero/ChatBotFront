@@ -25,8 +25,8 @@ function checkAuthStatus() {
     const authToken = localStorage.getItem('authToken');
     console.log('authToken:', authToken ? 'exists' : 'does not exist');
 
- 
-    const isOnLoginPage = window.location.pathname.includes('login.html');
+
+    const isOnLoginPage = window.location.pathname.includes('index.html');
     console.log('Is on login page:', isOnLoginPage);
 
     if (authToken) {
@@ -40,8 +40,8 @@ function checkAuthStatus() {
     } else {
         console.log('User is NOT authenticated.');
         if (!isOnLoginPage) {
-            console.log('Not on login page without token. Redirecting to login.html');
-            window.location.href = 'login.html';
+            console.log('Not on login page without token. Redirecting to index.html');
+            window.location.href = 'index.html';
         } else {
             console.log('On login page without token. Staying here.');
         }
@@ -168,7 +168,7 @@ if (logoutButton) {
     logoutButton.addEventListener('click', () => {
         console.log('Logout button clicked. Removing token and redirecting to login.html');
         localStorage.removeItem('authToken'); 
-        window.location.href = 'login.html'; 
+        window.location.href = 'index.html'; 
     });
 }
 
