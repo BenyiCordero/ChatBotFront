@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             localStorage.removeItem('authToken'); 
-            window.location.href = 'login.html'; 
+            window.location.href = 'index.html'; 
         });
     }
 
@@ -362,7 +362,7 @@ async function loadDashboardData() {
     console.log(authToken)
     if (!authToken) {
         console.error('No se encontró token de autenticación. Redirigiendo al login.');
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
         return;
     }
 
