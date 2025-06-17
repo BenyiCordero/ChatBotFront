@@ -94,7 +94,7 @@ async function updatePrompt() {
 updatePromptButton.addEventListener('click', async () => {
     const confirmed = await showConfirmation('¿Estás seguro de que los cambios en el prompt son correctos y quieres actualizarlos?');
     
-    if (confirmed) {
+    if (confirmed) {    
         const updateSuccessful = await updatePrompt();
         if (updateSuccessful) {
             window.location.href = 'dashboard.html'; 
