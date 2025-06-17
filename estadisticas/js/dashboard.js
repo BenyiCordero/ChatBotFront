@@ -4,26 +4,22 @@
 // Importa las funciones de creación de gráficos desde charts.js
 import { createTopIntentsChart } from './charts.js';
 
-// URL base de tu API de Spring Boot
-// ¡¡¡IMPORTANTE!!!: Asegúrate de que esta URL coincida con la BASE_API_URL en auth.js
-const BASE_API_URL = 'http://localhost:8081'; //Cambiar las base api cada que se cambie de tunel en ngrok o si se corre la api en local la base es http://127.0.0.1:8081
-const TOTAL_CONSULTAS_API_URL = `${BASE_API_URL}/consultas`; // Endpoint para el total de consultas
-const TOTAL_TEMAS = `${BASE_API_URL}/consultas/por-temav2`; //Endpoint para el porcentaje de temas
-const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/por-subtemav2`; //Endpoint para el porcentaje de subtemas
-const TOTAL_USUARIOS = `${BASE_API_URL}/consultas/cantidad-usuarios`; //Endpoint para el total de usuarios.
+const BASE_API_URL = 'http://localhost:8081'; 
+const TOTAL_CONSULTAS_API_URL = `${BASE_API_URL}/consultas`; 
+const TOTAL_TEMAS = `${BASE_API_URL}/consultas/por-temav2`; 
+const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/por-subtemav2`; 
+const TOTAL_USUARIOS = `${BASE_API_URL}/consultas/cantidad-usuarios`; 
 
 
 
-// Variables globales para almacenar los datos obtenidos de la API para su exportación
 let totalConsultasData = null;
 let temaDataGlobal = null;
 let subtemaDataGlobal = null;
 let totalConsultasFiltradoData = null;
 let temaFiltradoDataGlobal = null;
 let subtemaFiltradoDataGlobal = null;
-let totalConsultasFI2Data = null; // Para el total de usuarios activos
+let totalConsultasFI2Data = null; 
 
-// --- Funciones Auxiliares para Exportación y Feedback de UI ---
 
 /**
  * Muestra un cuadro de mensaje temporal al usuario.
@@ -39,12 +35,10 @@ function showMessage(text, type = 'info') {
     }
 
     messageText.textContent = text;
-    // Restablecer clases y aplicar las nuevas según el tipo
-    messageBox.className = 'message-box'; // Clase base
+    messageBox.className = 'message-box';   
     messageBox.classList.add(type);
     messageBox.classList.remove('hidden');
 
-    // Ocultar automáticamente después de 5 segundos
     setTimeout(() => {
         messageBox.classList.add('hidden');
     }, 5000);
@@ -64,7 +58,6 @@ function showConfirmation(message) {
 
         if (!confirmationModal || !confirmationMessage || !confirmYesBtn || !confirmNoBtn) {
             console.error('Elementos del modal de confirmación no encontrados.');
-            // Si los elementos no están, resolvemos a true por defecto para no bloquear la app.
             resolve(true); 
             return;
         }
@@ -72,7 +65,6 @@ function showConfirmation(message) {
         confirmationMessage.textContent = message;
         confirmationModal.classList.remove('hidden');
 
-        // Limpiar listeners anteriores para evitar múltiples activaciones
         const cleanUp = () => {
             confirmYesBtn.removeEventListener('click', onYes);
             confirmNoBtn.removeEventListener('click', onNo);
@@ -107,7 +99,6 @@ function exportToCsv(data, filename) {
         return;
     }
 
-    // Manejar datos escalares (como recuentos totales) envolviéndolos en un array de objetos
     let dataArray = Array.isArray(data) ? data : [{ value: data }];
     if (typeof data === 'number') {
         dataArray = [{ 'Count': data }];
@@ -119,7 +110,6 @@ function exportToCsv(data, filename) {
     const rows = dataArray.map(row =>
         Object.values(row).map(value => {
             let stringValue = String(value);
-            // Escapar comillas dobles y encerrar valores con comas o comillas
             if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
                 stringValue = `"${stringValue.replace(/"/g, '""')}"`;
             }
@@ -154,51 +144,39 @@ async function exportHtmlElementToPdf(elementId, filename) {
     }
 
     showMessage('Generando PDF...', 'info');
-    // Deshabilitar todos los botones de exportación mientras se genera el PDF
     const allExportButtons = document.querySelectorAll('button[id^="exportar-"]');
     allExportButtons.forEach(btn => btn.disabled = true);
 
     try {
-        const doc = new window.jspdf.jsPDF('p', 'pt', 'a4'); // 'p' para retrato, 'pt' para puntos, tamaño 'a4'
-        const margin = 20; // Margen en puntos (aprox. 0.7cm)
+        const doc = new window.jspdf.jsPDF('p', 'pt', 'a4'); 
+        const margin = 20; 
 
-        // Ocultar temporalmente los botones dentro del elemento capturado para que no aparezcan en el PDF
         const buttonsInElement = element.querySelectorAll('button');
         buttonsInElement.forEach(btn => btn.style.visibility = 'hidden');
 
         const canvas = await html2canvas(element, {
-            scale: 2, // Mayor escala para mejor resolución
-            logging: false, // Establecer en true para depurar problemas de html2canvas
-            useCORS: true // Importante si se utilizan imágenes/recursos de otros dominios
+            scale: 2, 
+            logging: false, 
+            useCORS: true 
         });
 
-        // Restaurar la visibilidad de los botones
         buttonsInElement.forEach(btn => btn.style.visibility = 'visible');
 
         const imgData = canvas.toDataURL('image/png');
-        const imgWidth = doc.internal.pageSize.getWidth() - (2 * margin); // Ancho de la imagen en el PDF considerando los márgenes
-        let imgHeight = (canvas.height * imgWidth) / canvas.width; // Calcular altura proporcional
-
+        const imgWidth = doc.internal.pageSize.getWidth() - (2 * margin); 
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
         let heightLeft = imgHeight;
-        let position = 0; // Posición vertical actual en el canvas que se ha dibujado
-        const pageHeight = doc.internal.pageSize.getHeight(); // Altura de la página A4 en puntos
+        let position = 0; 
+        const pageHeight = doc.internal.pageSize.getHeight();
 
-        // Añadir la primera página
         doc.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
-        heightLeft -= (pageHeight - (2 * margin)); // Restar lo que cabe en la primera página
+        heightLeft -= (pageHeight - (2 * margin)); 
         position += (pageHeight - (2 * margin));
 
-        // Añadir más páginas si el contenido es más alto que una página
         while (heightLeft > 0) {
             doc.addPage();
-            // Calcular la altura de la siguiente porción
             const nextSliceHeight = Math.min(heightLeft, pageHeight - (2 * margin));
-            // Calcular el desplazamiento Y para la imagen en la nueva página
-            const sY = -position; // Posición Y de origen en el canvas original para la porción de la nueva página
-            
-            // Añadir la porción de la imagen al PDF.
-            // Los parámetros de addImage son: imageData, format, x, y, width, height, alias, compression, rotation, sx, sy, sWidth, sHeight
-            // Usamos sx, sy, sWidth, sHeight para especificar una "porción" de la imagen original
+            const sY = -position; 
             doc.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight, null, null, null, sY, null, nextSliceHeight);
 
             heightLeft -= nextSliceHeight;
@@ -211,14 +189,12 @@ async function exportHtmlElementToPdf(elementId, filename) {
         console.error('Error al generar PDF:', error);
         showMessage(`Error al generar PDF: ${error.message}`, 'error');
     } finally {
-        // Habilitar de nuevo todos los botones de exportación
         allExportButtons.forEach(btn => btn.disabled = false);
     }
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Carga inicial de datos del dashboard
     loadDashboardData();
 
     // Obtener elementos de botones
@@ -229,9 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportarCsvFiltrado = document.getElementById('exportar-filtrados-csv-button');
     const exportarCsvTodo = document.getElementById('exportar-todo-csv-button');
     const exportarPdfTodo = document.getElementById('exportar-todo-pdf-button');
-    const logoutButton = document.getElementById('logout-button'); // Obtener el botón de cerrar sesión
+    const logoutButton = document.getElementById('logout-button'); 
 
-    // Obtener elementos select para los filtros (para los listeners de cambio)
     const mesSelect = document.getElementById('mesesFI');
     const anioSelect = document.getElementById('anioFI');
     const mesSelectFT = document.getElementById('mesFT');
@@ -242,10 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const semanaSelectFI2 = document.getElementById('semanaFI2');
     const mesSelectFI2 = document.getElementById('mesFI2');
 
-    // --- Listeners de Eventos para Botones ---
 
     if (goToPromptButton) {
-        goToPromptButton.addEventListener('click', async () => { // Hacemos el listener async
+        goToPromptButton.addEventListener('click', async () => {
             const confirmed = await showConfirmation('¿Estás seguro de que quieres ir a modificar el prompt?');
             if (confirmed) {
                 window.location.href = 'prompt.html'; 
@@ -257,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (exportarCsv){
         exportarCsv.addEventListener('click', () => {
-            // Combinar datos de interacciones generales, temas generales y subtemas generales para el CSV
             const generalDataCombined = [];
             if (totalConsultasData !== null) {
                 generalDataCombined.push({ Metrica: 'Total Interacciones (General)', Valor: totalConsultasData });
@@ -282,13 +255,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (exportarPdf){
         exportarPdf.addEventListener('click', () => {
-            // Para PDF de interacciones generales, capturamos toda la sección de datos generales
             exportHtmlElementToPdf('general-dashboard-section', 'dashboard_general.pdf');
         });
     }
     if (exportarCsvFiltrado){ 
         exportarCsvFiltrado.addEventListener('click', () => {
-            // Combinar datos de interacciones filtradas, temas filtrados, subtemas filtrados y usuarios activos filtrados para el CSV
             const filteredDataCombined = [];
             if (totalConsultasFiltradoData !== null) {
                 filteredDataCombined.push({ Metrica: 'Total Interacciones (Filtradas)', Valor: totalConsultasFiltradoData });
@@ -316,7 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (exportarPdfFiltrado){ 
         exportarPdfFiltrado.addEventListener('click', () => {
-            // Para PDF de interacciones filtradas, capturamos toda la sección de datos filtrados
             exportHtmlElementToPdf('filtered-dashboard-section', 'dashboard_filtrado.pdf');
         });
     }
@@ -325,33 +295,27 @@ document.addEventListener('DOMContentLoaded', () => {
         exportarCsvTodo.addEventListener('click', () => {
             const combinedData = [];
 
-            // Añadir estadísticas generales
             if (totalConsultasData !== null) combinedData.push({ Metrica: 'Total Interacciones (General)', Valor: totalConsultasData });
             
-            // Añadir datos generales de temas
             if (temaDataGlobal && Object.keys(temaDataGlobal).length > 0) {
                 Object.entries(temaDataGlobal).forEach(([theme, count]) => {
                     combinedData.push({ Metrica: `Tema: ${theme}`, Valor: count, Categoria: 'Temas Generales' });
                 });
             }
-            // Añadir datos generales de subtemas
             if (subtemaDataGlobal && Object.keys(subtemaDataGlobal).length > 0) {
                 Object.entries(subtemaDataGlobal).forEach(([subtheme, count]) => {
                     combinedData.push({ Metrica: `Subtema: ${subtheme}`, Valor: count, Categoria: 'Subtemas Generales' });
                 });
             }
 
-            // Añadir estadísticas filtradas
             if (totalConsultasFiltradoData !== null) combinedData.push({ Metrica: 'Total Interacciones (Filtradas)', Valor: totalConsultasFiltradoData });
             if (totalConsultasFI2Data !== null) combinedData.push({ Metrica: 'Total Usuarios Activos (Filtrados)', Valor: totalConsultasFI2Data });
 
-            // Añadir datos filtrados de temas
             if (temaFiltradoDataGlobal && Object.keys(temaFiltradoDataGlobal).length > 0) {
                 Object.entries(temaFiltradoDataGlobal).forEach(([theme, count]) => {
                     combinedData.push({ Metrica: `Tema: ${theme}`, Valor: count, Categoria: 'Temas Filtrados' });
                 });
             }
-            // Añadir datos filtrados de subtemas
             if (subtemaFiltradoDataGlobal && Object.keys(subtemaFiltradoDataGlobal).length > 0) {
                 Object.entries(subtemaFiltradoDataGlobal).forEach(([subtheme, count]) => {
                     combinedData.push({ Metrica: `Subtema: ${subtheme}`, Valor: count, Categoria: 'Subtemas Filtrados' });
@@ -372,15 +336,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Listener para el botón de Cerrar Sesión ---
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
-            localStorage.removeItem('authToken'); // Eliminar el token de autenticación
-            window.location.href = 'login.html'; // Redirigir a la página de login
+            localStorage.removeItem('authToken'); 
+            window.location.href = 'login.html'; 
         });
     }
 
-    // --- Listeners de Eventos para Filtros (Selects) ---
     if (mesSelect) mesSelect.addEventListener('change', loadDashboardData);
     if (anioSelect) anioSelect.addEventListener('change', loadDashboardData);
     if (mesSelectFT) mesSelectFT.addEventListener('change', loadDashboardData);
@@ -392,31 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (semanaSelectFI2) semanaSelectFI2.addEventListener('change', loadDashboardData);
 });
 
-// La función 'mostrarPromptButton' original se ha integrado en el listener DOMContentLoaded para manejar la confirmación.
-// Esta es la lógica que debes aplicar en prompt.html para el botón "Actualizar Prompt".
-/*
-async function handleUpdatePromptClick() {
-    const confirmed = await showConfirmation('¿Estás seguro de que los cambios en el prompt son correctos y quieres actualizarlos?');
-    if (confirmed) {
-        // Aquí va tu lógica para actualizar el prompt
-        // Por ejemplo:
-        // const promptContent = document.getElementById('prompt-textarea').value;
-        // await updatePromptInDatabase(promptContent); // Tu función de actualización
-        // showMessage('Prompt actualizado exitosamente.', 'success');
-    } else {
-        showMessage('Actualización del prompt cancelada.', 'info');
-    }
-}
-
-// En el archivo JS de prompt.html, enlaza esto al botón:
-// const updatePromptButton = document.getElementById('update-prompt-button');
-// if (updatePromptButton) {
-//     updatePromptButton.addEventListener('click', handleUpdatePromptClick);
-// }
-*/
-
-
-// Función para cargar y mostrar los datos del dashboard
 async function loadDashboardData() {
     console.log('Cargando datos del dashboard desde la API...');
     showMessage('Cargando datos del dashboard...', 'info');
@@ -430,16 +367,14 @@ async function loadDashboardData() {
     }
 
     try {
-        // --- Obtener el total de consultas (General) ---
         const responseTotalConsultas = await fetch(TOTAL_CONSULTAS_API_URL, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true'  },
         });
         if (!responseTotalConsultas.ok) throw new Error(`Error al obtener total de consultas: ${responseTotalConsultas.statusText}`);
-        totalConsultasData = await responseTotalConsultas.json(); // Almacenar datos globalmente
+        totalConsultasData = await responseTotalConsultas.json(); 
         document.getElementById('interactions-count').textContent = totalConsultasData;
 
-        // --- Cargar datos para "Temas más frecuentes" (General) ---
         const responseTema = await fetch(TOTAL_TEMAS, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
@@ -448,19 +383,16 @@ async function loadDashboardData() {
         temaDataGlobal = await responseTema.json(); // Almacenar datos globalmente
         createTopIntentsChart('top-themes-chart', Object.keys(temaDataGlobal), Object.values(temaDataGlobal));
 
-        // --- Cargar datos para "Subtemas más frecuentes" (General) ---
         const responseSubtema = await fetch(TOTAL_SUBTEMAS, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseSubtema.ok) throw new Error(`Error al obtener subtemas: ${responseSubtema.statusText}`);
-        subtemaDataGlobal = await responseSubtema.json(); // Almacenar datos globalmente
+        subtemaDataGlobal = await responseSubtema.json();
         createTopIntentsChart('top-intents-chart', Object.keys(subtemaDataGlobal), Object.values(subtemaDataGlobal));
 
-        // --- Obtener el total de consultas FILTRADO (por Mes/Año) ---
         let mesNumero = parseInt(document.getElementById('mesesFI').value);
         let anio = parseInt(document.getElementById('anioFI').value);
-        // Establecer valores por defecto si no son válidos (por ejemplo, al cargar por primera vez)
         if (isNaN(mesNumero)) mesNumero = new Date().getMonth() + 1;
         if (isNaN(anio)) anio = new Date().getFullYear();
 
@@ -470,10 +402,9 @@ async function loadDashboardData() {
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTotalConsultasF.ok) throw new Error(`Error al obtener total de consultas filtradas: ${responseTotalConsultasF.statusText}`);
-        totalConsultasFiltradoData = await responseTotalConsultasF.json(); // Almacenar datos globalmente
+        totalConsultasFiltradoData = await responseTotalConsultasF.json(); 
         document.getElementById('interactions-count-f').textContent = totalConsultasFiltradoData;
 
-        // --- Cargar datos para "Temas más frecuentes" FILTRADO (por Mes/Año) ---
         let mesNumeroFT = parseInt(document.getElementById('mesFT').value);
         let anioFT = parseInt(document.getElementById('anioFT').value);
         if (isNaN(mesNumeroFT)) mesNumeroFT = new Date().getMonth() + 1;
@@ -485,10 +416,9 @@ async function loadDashboardData() {
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTemaFT.ok) throw new Error(`Error al obtener temas filtrados: ${responseTemaFT.statusText}`);
-        temaFiltradoDataGlobal = await responseTemaFT.json(); // Almacenar datos globalmente
+        temaFiltradoDataGlobal = await responseTemaFT.json(); 
         createTopIntentsChart('top-themes-chart-FT', Object.keys(temaFiltradoDataGlobal), Object.values(temaFiltradoDataGlobal));
 
-        // --- Cargar datos para "Subtemas más frecuentes" FILTRADO (por Mes/Año) ---
         let mesNumeroFS = parseInt(document.getElementById('mesFS').value);
         let anioFS = parseInt(document.getElementById('anioFS').value);
         if (isNaN(mesNumeroFS)) mesNumeroFS = new Date().getMonth() + 1;
@@ -500,17 +430,16 @@ async function loadDashboardData() {
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTemaFS.ok) throw new Error(`Error al obtener subtemas filtrados: ${responseTemaFS.statusText}`);
-        subtemaFiltradoDataGlobal = await responseTemaFS.json(); // Almacenar datos globalmente
+        subtemaFiltradoDataGlobal = await responseTemaFS.json(); 
         createTopIntentsChart('top-intents-chart-FS', Object.keys(subtemaFiltradoDataGlobal), Object.values(subtemaFiltradoDataGlobal));
 
-        // Bloque de codigo para Usuarios por semana, mes y anio
         let mesNumeroFI2 = parseInt(document.getElementById('mesFI2').value);
         let anioFI2 = parseInt(document.getElementById('anioFI2').value);
         let semanaFI2 = parseInt(document.getElementById('semanaFI2').value); 
         // Establecer valores por defecto si no son válidos
         if (isNaN(mesNumeroFI2)) mesNumeroFI2 = new Date().getMonth() + 1;
         if (isNaN(anioFI2)) anioFI2 = new Date().getFullYear();
-        if (isNaN(semanaFI2)) semanaFI2 = 1; // Por defecto a la semana 1 si no es válida
+        if (isNaN(semanaFI2)) semanaFI2 = 1; 
 
         const urlFI2 = `${TOTAL_USUARIOS}?year=${anioFI2}&month=${mesNumeroFI2}&week=${semanaFI2}`;
         const responseTotalConsultasFI2 = await fetch(urlFI2, {
@@ -518,7 +447,7 @@ async function loadDashboardData() {
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'ngrok-skip-browser-warning': 'true' },
         });
         if (!responseTotalConsultasFI2.ok) throw new Error(`Error al obtener total de usuarios activos: ${responseTotalConsultasFI2.statusText}`);
-        totalConsultasFI2Data = await responseTotalConsultasFI2.json(); // Almacenar datos globalmente
+        totalConsultasFI2Data = await responseTotalConsultasFI2.json(); 
         document.getElementById('interactions-count-FI2').textContent = totalConsultasFI2Data;
 
         console.log('Dashboard cargado con éxito.');
@@ -527,8 +456,5 @@ async function loadDashboardData() {
     } catch (error) {
         console.error('Error al cargar los datos del dashboard:', error);
         showMessage(`Error al cargar dashboard: ${error.message}`, 'error');
-        // Si hay un error al cargar los datos, podrías redirigir al login
-        // o mostrar un mensaje de error claro en el dashboard.
-        // window.location.href = 'login.html'; // Descomentar si quieres redirigir en cualquier error de carga
     }
 }
