@@ -31,7 +31,3 @@ git clone https://github.com/BenyiCordero/ChatBotFront.git
 - `index.html`: entrada y/o panel simple de autenticación.
 - `dashboard.html`: muestra estadísticas agregadas y detalles; espera endpoints del backend que devuelvan métricas y listas de interacciones.  
 - `prompt.html`: formulario para ver/editar prompt.
-
-
----  
-**Fin del README**
