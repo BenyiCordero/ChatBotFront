@@ -6,9 +6,9 @@ import { createTopIntentsChart } from './charts.js';
 
 const BASE_API_URL = 'http://localhost:8081'; 
 const TOTAL_CONSULTAS_API_URL = `${BASE_API_URL}/consultas`; 
-const TOTAL_TEMAS = `${BASE_API_URL}/consultas/por-temav2`; 
-const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/por-subtemav2`; 
-const TOTAL_USUARIOS = `${BASE_API_URL}/consultas/cantidad-usuarios`; 
+const TOTAL_TEMAS = `${BASE_API_URL}/consultas/tema`; 
+const TOTAL_SUBTEMAS = `${BASE_API_URL}/consultas/subtema`; 
+const TOTAL_USUARIOS = `${BASE_API_URL}/consultas/usuarios`; 
 
 
 

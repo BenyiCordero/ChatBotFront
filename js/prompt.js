@@ -11,7 +11,7 @@ const promptError = document.getElementById('prompt-error');
 
 
 const BASE_API_URL = 'http://localhost:8081'; 
-const PROMPT_API_URL = `${BASE_API_URL}/consultas/prompt/1`; 
+const PROMPT_API_URL = `${BASE_API_URL}/prompt/1`; 
 
 
 async function fetchPrompt() {
